@@ -1,55 +1,92 @@
-# BaseToken Hardhat Project
+# CapturGO - DePIN Location Intelligence Protocol
 
-This project contains a simple ERC20 token contract (`BaseToken`) using OpenZeppelin and Hardhat.
+Decentralized location data network rewarding users for sharing anonymized movement insights.
 
-## Prerequisites
+## Quick Start
 
-- Node.js (v16+ recommended)
-- npm
+```bash
+# Install dependencies
+npm install
 
-## Setup
+# Deploy entire infrastructure
+npx hardhat run scripts/deploy-all.js --network base
 
-1. **Install dependencies:**
-
-   ```sh
-   npm install
-   ```
-
-2. **Configure network (optional):**
-
-   - Edit `hardhat.config.js` to add your private key for testnet/mainnet deployment.
-
-## Compile the Contract
-
-```sh
-npx hardhat compile
+# Local testing
+npx hardhat node
+npx hardhat run scripts/deploy-all.js --network localhost
 ```
 
-## Deploy the Contract (Local Network)
+## Smart Contracts
 
-1. Start a local Hardhat node (in a separate terminal):
+- **BaseToken.sol** - CAP token (ERC20) with minting capabilities
+- **DataContribution.sol** - Location data submission with quality validation and rewards
+- **DeviceRegistry.sol** - Device management with reputation scoring and fraud prevention
+- **DataMarketplace.sol** - Enterprise data subscription marketplace with revenue sharing
+- **StakingRewards.sol** - Token staking with tiered rewards system
 
-   ```sh
-   npx hardhat node
-   ```
+## Architecture Flow
 
-2. Deploy the contract:
+1. Users submit anonymized location data through mobile app
+2. Device registry validates and tracks device reputation
+3. Quality data gets validated and rewarded with CAP tokens
+4. Enterprises purchase data subscriptions using CAP
+5. Community members stake tokens for additional rewards
 
-   ```sh
-   npx hardhat run scripts/deploy.js --network localhost
-   ```
+## Configuration
 
-## Deploy to Testnet (e.g., Base Sepolia)
+Update `hardhat.config.js` with your network settings:
 
-1. Set your private key in `hardhat.config.js` under `networks.base.accounts`.
-2. Deploy:
+```javascript
+networks: {
+  base: {
+    url: "https://sepolia.base.org",
+    accounts: ["YOUR_PRIVATE_KEY"]
+  }
+}
+```
 
-   ```sh
-   npx hardhat run scripts/deploy.js --network base
-   ```
+## Deployment
 
-## Contract Details
+The `deploy-all.js` script handles:
+- Sequential contract deployment
+- Permission and role configuration
+- Initial token minting (1M CAP)
+- Staking pool funding (100K CAP)
+- Deployment address tracking in JSON
 
-- **Contract:** `BaseToken`
-- **Symbol:** `CAP`
-- **Minting:** Only the owner (deployer) can mint new tokens.
+## Development
+
+```bash
+# Compile
+npx hardhat compile
+
+# Test
+npx hardhat test
+
+# Verify contracts
+npx hardhat verify --network base CONTRACT_ADDRESS
+```
+
+## Token Economics
+
+- Symbol: CAP
+- Initial Supply: 1,000,000
+- Staking Rewards Pool: 100,000
+- Data Validation Reward: 10 CAP per point
+- Marketplace Fee: 10%
+
+## Project Structure
+
+```
+contracts/
+  ├── BaseToken.sol
+  ├── DataContribution.sol
+  ├── DeviceRegistry.sol
+  ├── DataMarketplace.sol
+  └── StakingRewards.sol
+scripts/
+  ├── deploy.js
+  └── deploy-all.js
+deployments/
+  └── [chainId].json
+```
